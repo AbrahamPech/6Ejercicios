@@ -49,8 +49,13 @@ class Cambio:
 
         def calcular():
             try:
-                total_pagar = float(total_pagar_entry.get())
-                cantidad_pagada = float(cantidad_pagada_entry.get())
+                total_pagar = float(total_pagar_entry.get())  # Convierte el valor del Entry
+                cantidad_pagada = float(cantidad_pagada_entry.get())  # Convierte el valor del Entry
+                
+                if total_pagar < 0:
+                    messagebox.showerror("Error", "El total a pagar debe ser mayor o igual a 0.")
+                    return
+
                 if cantidad_pagada < total_pagar:
                     messagebox.showerror("Error", "La cantidad pagada debe ser mayor o igual al total a pagar.")
                 else:

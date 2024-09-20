@@ -6,14 +6,17 @@ class Factorial:
     def main(self, root):
         frame = tk.Frame(root)
         frame.pack(pady=20)
-
         tk.Label(frame, text="Ingrese un número a factorizar:").grid(row=0, column=0)
         numero_entry = tk.Entry(frame)
         numero_entry.grid(row=0, column=1)
 
+
         def calcular():
             try:
-                numero = int(numero_entry.get())
+                numero = int(numero_entry.get())  # Convertir el valor del Entry a entero
+                if numero < 0:
+                    messagebox.showerror("Error", "El número a factorizar debe ser mayor o igual a 0.")
+                    return
                 resultado = self.FactorialRecursivo(numero)
                 messagebox.showinfo("Resultado", f"El resultado de {numero} es igual a {resultado}")
             except ValueError:

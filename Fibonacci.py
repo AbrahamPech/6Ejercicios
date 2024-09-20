@@ -18,6 +18,9 @@ class Fibonacci:
                     respuesta = messagebox.askyesno("Advertencia", "Un número mayor a 35 puede tardar en dar el resultado. ¿Estás seguro?")
                     if not respuesta:
                         return
+                elif numero < 0:
+                    messagebox.showerror("Error", "El número a factorizar debe ser mayor o igual a 0.")
+                    return
                 resultado = self.fibonacci(numero)
                 messagebox.showinfo("Resultado", f"El número Fibonacci en la posición {numero} es: {resultado}")
             except ValueError:
