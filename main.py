@@ -4,10 +4,19 @@ from Fibonacci import Fibonacci  # Corregir la importación
 from mcd import MCD
 from cambio import Cambio
 from TdH import TorreDeHanoi  # Importar la clase TorreDeHanoi
+from Reinas import N_Reinas
 
 import os
-# menu en python
+import platform  
 
+# Función para limpiar la pantalla
+def clearScreen():
+    if platform.system() == "Windows":
+        os.system('cls')
+    else:
+        os.system('clear')
+
+# menu en python
 while True:
     print("\nSeleciona un ejercicio\n 1.- Ejericicio:Factorial \n 2.- Ejericicio:Fibonacci\n 3.- Ejercicio:MCD\n 4.- Ejercicio:Cambio monedas\n 5.- Ejercicio:Torre de Hanòi\n 6.- Ejercicio:Propio\n 0.- Salir")
 
@@ -34,7 +43,8 @@ while True:
         hanoi.main()
 
     elif opcion == '6':
-        print("Ejercicio propio no implementado aún.")
+        reinas = N_Reinas()
+        reinas.main()
 
     elif opcion == '0':
         print("Saliendo del programa.")
@@ -44,4 +54,4 @@ while True:
         print("Opción no válida, selecciona una de las indicadas.")
 
     input("Presione alguna tecla para continuar")
-    os.system('cls')
+    clearScreen()

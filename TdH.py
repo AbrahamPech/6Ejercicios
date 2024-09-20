@@ -1,3 +1,4 @@
+import time
 
 class TorreDeHanoi:
     def __init__(self):
@@ -15,6 +16,7 @@ class TorreDeHanoi:
         for movimiento in self.movimientos:
             ficha, desde, hacia = movimiento
             print(f"Ficha {ficha} de {desde} a {hacia}")
+            time.sleep(1)  # Pausa de 1 segundo
 
     def main(self):
         try:
