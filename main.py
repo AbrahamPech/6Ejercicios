@@ -1,57 +1,53 @@
-# Importacion de clases
+import tkinter as tk
+from tkinter import messagebox
 from Factorizacion import Factorial
-from Fibonacci import Fibonacci  # Corregir la importación
+from Fibonacci import Fibonacci
 from mcd import MCD
 from cambio import Cambio
-from TdH import TorreDeHanoi  # Importar la clase TorreDeHanoi
+from TdH import TorreDeHanoi
 from Reinas import N_Reinas
 
-import os
-import platform  
+class App(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("Menú de Ejercicios")
+        self.geometry("300x300")
+        self.create_widgets()
 
-# Función para limpiar la pantalla
-def clearScreen():
-    if platform.system() == "Windows":
-        os.system('cls')
-    else:
-        os.system('clear')
-
-# menu en python
-while True:
-    print("\nSeleciona un ejercicio\n 1.- Ejericicio:Factorial \n 2.- Ejericicio:Fibonacci\n 3.- Ejercicio:MCD\n 4.- Ejercicio:Cambio monedas\n 5.- Ejercicio:Torre de Hanòi\n 6.- Ejercicio:Propio\n 0.- Salir")
-
-    opcion = input("Introduce un número: ")
-
-    if opcion == '1':
-        factorial = Factorial()
-        factorial.main()
+    def create_widgets(self):
+        tk.Label(self, text="Selecciona un ejercicio").pack(pady=10)
         
-    elif opcion == '2':
-        fibo = Fibonacci()  # Corregir la instancia de Fibonacci
-        fibo.main()
+        tk.Button(self, text="Factorial", command=self.run_factorial).pack(pady=5)
+        tk.Button(self, text="Fibonacci", command=self.run_fibonacci).pack(pady=5)
+        tk.Button(self, text="MCD", command=self.run_mcd).pack(pady=5)
+        tk.Button(self, text="Cambio de Monedas", command=self.run_cambio).pack(pady=5)
+        tk.Button(self, text="Torre de Hanoi", command=self.run_hanoi).pack(pady=5)
+        tk.Button(self, text="N Reinas", command=self.run_reinas).pack(pady=5)
+        tk.Button(self, text="Salir", command=self.quit).pack(pady=5)
 
-    elif opcion == '3':
-        mcd = MCD()
-        mcd.main()
-         
-    elif opcion == '4':
-        cambio = Cambio()
-        cambio.main()
+    def run_factorial(self):
+        self.new_window(Factorial)
 
-    elif opcion == '5':
-        hanoi = TorreDeHanoi()  # Instanciar la clase TorreDeHanoi
-        hanoi.main()
+    def run_fibonacci(self):
+        self.new_window(Fibonacci)
 
-    elif opcion == '6':
-        reinas = N_Reinas()
-        reinas.main()
+    def run_mcd(self):
+        self.new_window(MCD)
 
-    elif opcion == '0':
-        print("Saliendo del programa.")
-        break
+    def run_cambio(self):
+        self.new_window(Cambio)
 
-    else:
-        print("Opción no válida, selecciona una de las indicadas.")
+    def run_hanoi(self):
+        self.new_window(TorreDeHanoi)
 
-    input("Presione alguna tecla para continuar")
-    clearScreen()
+    def run_reinas(self):
+        self.new_window(N_Reinas)
+
+    def new_window(self, cls):
+        new_win = tk.Toplevel(self)
+        new_win.geometry("300x300")
+        cls().main(new_win)
+
+if __name__ == "__main__":
+    app = App()
+    app.mainloop()

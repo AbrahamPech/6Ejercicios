@@ -1,3 +1,6 @@
+import tkinter as tk
+from tkinter import messagebox
+
 class Cambio:
     @staticmethod
     def calcular_cambio(total_pagar, cantidad_pagada, denominaciones=None, resultado=None):
@@ -32,18 +35,29 @@ class Cambio:
         
         return Cambio.calcular_cambio(total_pagar, cantidad_pagada, denominaciones[1:], resultado)
 
-    def main(self):
-        # Solicita al usuario dos números y muestra el cambio
-        try:
-            total_pagar = float(input("Ingrese el total a pagar: "))
-            cantidad_pagada = float(input("Ingrese la cantidad pagada: "))
-            
-            if cantidad_pagada < total_pagar:
-                print("La cantidad pagada debe ser mayor o igual al total a pagar.")
-            else:
-                cambio = self.calcular_cambio(total_pagar, cantidad_pagada)
-                print("El cambio a devolver es:")
-                for denominacion, cantidad in cambio.items():
-                    print(f"{cantidad} {denominacion}")
-        except ValueError:
-            print("Por favor, ingrese un número válido.")
+    def main(self, root):
+        frame = tk.Frame(root)
+        frame.pack(pady=20)
+
+        tk.Label(frame, text="Total a pagar:").grid(row=0, column=0)
+        total_pagar_entry = tk.Entry(frame)
+        total_pagar_entry.grid(row=0, column=1)
+
+        tk.Label(frame, text="Cantidad pagada:").grid(row=1, column=0)
+        cantidad_pagada_entry = tk.Entry(frame)
+        cantidad_pagada_entry.grid(row=1, column=1)
+
+        def calcular():
+            try:
+                total_pagar = float(total_pagar_entry.get())
+                cantidad_pagada = float(cantidad_pagada_entry.get())
+                if cantidad_pagada < total_pagar:
+                    messagebox.showerror("Error", "La cantidad pagada debe ser mayor o igual al total a pagar.")
+                else:
+                    cambio = self.calcular_cambio(total_pagar, cantidad_pagada)
+                    resultado = "\n".join([f"{cantidad} {denominacion}" for denominacion, cantidad in cambio.items()])
+                    messagebox.showinfo("Cambio", f"El cambio a devolver es:\n{resultado}")
+            except ValueError:
+                messagebox.showerror("Error", "Por favor, ingrese un número válido.")
+
+        tk.Button(frame, text="Calcular", command=calcular).grid(row=2, columnspan=2, pady=10)

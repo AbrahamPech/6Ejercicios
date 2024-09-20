@@ -1,12 +1,25 @@
+import tkinter as tk
+from tkinter import messagebox
+
 class Factorial:
 
-    def __init__(self):
-        pass
+    def main(self, root):
+        frame = tk.Frame(root)
+        frame.pack(pady=20)
 
-    def main(self):
-        numero = int(input("Ingrese un numero a factorizar:"))
-        resultado = self.FactorialRecursivo(numero)
-        print("El resultado de " + str(numero) + " es igual a " + str(resultado))
+        tk.Label(frame, text="Ingrese un número a factorizar:").grid(row=0, column=0)
+        numero_entry = tk.Entry(frame)
+        numero_entry.grid(row=0, column=1)
+
+        def calcular():
+            try:
+                numero = int(numero_entry.get())
+                resultado = self.FactorialRecursivo(numero)
+                messagebox.showinfo("Resultado", f"El resultado de {numero} es igual a {resultado}")
+            except ValueError:
+                messagebox.showerror("Error", "Por favor, ingrese un número válido.")
+
+        tk.Button(frame, text="Calcular", command=calcular).grid(row=1, columnspan=2, pady=10)
 
     def FactorialRecursivo(self, n):
         if n == 0 or n == 1:

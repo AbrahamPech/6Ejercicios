@@ -1,63 +1,72 @@
 import time
+import tkinter as tk
+from tkinter import messagebox
+
 class N_Reinas:
     def __init__(self):
         self.soluciones = []
 
     def es_valido(self, tablero, fila, col, n):
-        # Verifica si hay alguna reina en la misma columna
         for i in range(fila):
             if tablero[i] == col:
                 return False
-
-        # Verifica la diagonal superior izquierda
         for i, j in zip(range(fila, -1, -1), range(col, -1, -1)):
             if tablero[i] == j:
                 return False
-
-        # Verifica la diagonal superior derecha
         for i, j in zip(range(fila, -1, -1), range(col, n)):
             if tablero[i] == j:
                 return False
-
         return True
 
     def resolver_n_reinas(self, tablero, fila, n):
-        # Si se han colocado todas las reinas, la solución es válida
         if fila == n:
             self.soluciones.append(tablero[:])
             return
-
-        # Intenta colocar una reina en cada columna de la fila actual
         for col in range(n):
             if self.es_valido(tablero, fila, col, n):
-                tablero[fila] = col  # Coloca la reina en la columna actual
-                self.resolver_n_reinas(tablero, fila + 1, n)  # Intenta colocar la siguiente reina
-                tablero[fila] = -1  # Elimina la reina y retrocede (backtracking)
+                tablero[fila] = col
+                self.resolver_n_reinas(tablero, fila + 1, n)
+                tablero[fila] = -1
 
     def imprimir_solucion(self, solucion, n):
-        # Imprime una solución en formato visual de tablero
         for i in range(n):
             fila = ['.'] * n
-            fila[solucion[i]] = 'Q'  # Coloca la reina en la posición correspondiente
+            fila[solucion[i]] = 'Q'
             print(' '.join(fila))
         print("Solución número:", self.soluciones.index(solucion) + 1)
         time.sleep(1)
 
-    def main(self):
-        # Solicitar el valor de N (tamaño del tablero)
-        try:
-            n = int(input("Introduce el tamaño del tablero (mayor a 3): "))
-        except ValueError:
-            print("Por favor, introduce un número válido.")
-            return
+    def main(self, root):
+        frame = tk.Frame(root)
+        frame.pack(pady=20)
 
-        # Inicializa el tablero (usando una lista donde el índice es la fila y el valor es la columna)
-        tablero = [-1] * n
+        tk.Label(frame, text="Introduce el tamaño del tablero (mayor a 3):").grid(row=0, column=0)
+        n_entry = tk.Entry(frame)
+        n_entry.grid(row=0, column=1)
 
-        # Resuelve el problema de N reinas
-        self.resolver_n_reinas(tablero, 0, n)
+        def calcular():
+            try:
+                n = int(n_entry.get())
+                if n <= 3:
+                    messagebox.showerror("Error", "El tamaño del tablero debe ser mayor a 3.")
+                    return
+                tablero = [-1] * n
+                self.soluciones = []  # Reset solutions
+                self.resolver_n_reinas(tablero, 0, n)
+                resultado = f"Se encontraron {len(self.soluciones)} soluciones para un tablero de {n}x{n}:\n"
+                for solucion in self.soluciones:
+                    resultado += "\n".join([' '.join(['Q' if i == col else '.' for i in range(n)]) for col in solucion]) + "\n\n"
+                # Crear una nueva ventana para mostrar los resultados con scrollbar
+                result_window = tk.Toplevel(root)
+                result_window.title("Soluciones")
+                text_area = tk.Text(result_window, wrap=tk.WORD)
+                scrollbar = tk.Scrollbar(result_window, command=text_area.yview)
+                text_area.config(yscrollcommand=scrollbar.set)
+                text_area.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+                scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+                text_area.insert(tk.END, resultado)
+                text_area.config(state=tk.DISABLED)
+            except ValueError:
+                messagebox.showerror("Error", "Por favor, ingrese un número válido.")
 
-        # Muestra las soluciones encontradas
-        print(f"Se encontraron {len(self.soluciones)} soluciones para un tablero de {n}x{n}:\n")
-        for solucion in self.soluciones:
-            self.imprimir_solucion(solucion, n)
+        tk.Button(frame, text="Calcular", command=calcular).grid(row=1, columnspan=2, pady=10)
